@@ -1,10 +1,13 @@
 import os
 from airflow import DAG
 from airflow.decorators import task
+from airflow.providers.google.cloud.operators.gcs import GCSCreateBucketOperator
+from airflow.providers.google.cloud.transfers.local_to_gcs import LocalFilesystemToGCSOperator
 import pendulum
 
 KAGGLE_DATASET = "gregorut/videogamesales"
 DATA_DIR = "/opt/airflow/data"
+BUCKET_NAME = "dtc-de-course-bucket-gustavo-2026"
 
 default_args = {
     "owner": "gustavo",
@@ -17,31 +20,27 @@ with DAG(
     default_args=default_args,
     schedule_interval=None,
     catchup=False,
-    tags=["zoocamps", "kaggle", "gcp"],
-    doc_md="""
-    ### Video Games Sales Pipeline
-    DAG responsável por extrair dados do Kaggle e (em breve) subir para o Data Lake no GCP.
-    """
+    tags=["zoocamps", "kaggle", "gcp"]
 ) as dag:
 
     @task(task_id="download_dataset_kaggle")
     def download_kaggle_data():
         import kaggle
-
         os.makedirs(DATA_DIR, exist_ok=True)
-        print(f"Iniciando download do dataset: {KAGGLE_DATASET}")
-
         kaggle.api.authenticate()
-
         kaggle.api.dataset_download_files(
             dataset=KAGGLE_DATASET,
             path=DATA_DIR,
             unzip=True
         )
+        return os.path.join(DATA_DIR, "vgsales.csv")
 
-        file_path = os.path.join(DATA_DIR, "vgsales.csv")
-        print(f"Download concluido com sucesso! Arquivo salvo em: {file_path}")
+    upload_to_gcs = LocalFilesystemToGCSOperator(
+        task_id="upload_to_gcs",
+        src="/opt/airflow/data/vgsales.csv",
+        dst="raw/vgsales.csv",
+        bucket=BUCKET_NAME,
+        gcp_conn_id="google_cloud_default"
+    )
 
-        return file_path
-
-    download_task = download_kaggle_data()
+    download_kaggle_data() >> upload_to_gcs

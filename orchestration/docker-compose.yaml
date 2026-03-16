@@ -26,6 +26,7 @@ services:
       - AIRFLOW__WEBSERVER__DEFAULT_UI_TIMEZONE=America/Sao_Paulo
       - _PIP_ADDITIONAL_REQUIREMENTS=apache-airflow-providers-google pandas pyarrow kaggle
       - GOOGLE_APPLICATION_CREDENTIALS=/opt/airflow/credentials/google_credentials.json
+      - AIRFLOW_CONN_GOOGLE_CLOUD_DEFAULT=google-cloud-platform://?extra__google_cloud_platform__project=de-zoomcamp-484312&extra__google_cloud_platform__key_path=%2Fopt%2Fairflow%2Fcredentials%2Fgoogle_credentials.json
       - KAGGLE_USERNAME=${KAGGLE_USERNAME}
       - KAGGLE_KEY=${KAGGLE_KEY}
     ports:
@@ -50,6 +51,7 @@ services:
       - AIRFLOW__CORE__LOAD_EXAMPLES=False
       - _PIP_ADDITIONAL_REQUIREMENTS=apache-airflow-providers-google pandas pyarrow kaggle
       - GOOGLE_APPLICATION_CREDENTIALS=/opt/airflow/credentials/google_credentials.json
+      - AIRFLOW_CONN_GOOGLE_CLOUD_DEFAULT=google-cloud-platform://?extra__google_cloud_platform__project=de-zoomcamp-484312&extra__google_cloud_platform__key_path=%2Fopt%2Fairflow%2Fcredentials%2Fgoogle_credentials.json
       - KAGGLE_USERNAME=${KAGGLE_USERNAME}
       - KAGGLE_KEY=${KAGGLE_KEY}
     volumes:
