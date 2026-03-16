@@ -1,0 +1,17 @@
+cat <<EOF > .gitignore
+.venv/
+__pycache__/
+*.pyc
+
+data/
+*.csv
+*.parquet
+*.gz
+
+.terraform/
+*.tfstate
+*.tfstate.backup
+.terraform.lock.hcl
+
+*.json
+EOF
