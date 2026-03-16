@@ -15,3 +15,9 @@ data/
 
 *.json
 EOF
+
+.env
+
+orchestration/logs/
+orchestration/airflow_db/
+orchestration/plugins/
