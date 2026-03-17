@@ -1,5 +1,5 @@
 
-### 🇧🇷 Versão em Português (Se quiser criar um arquivo `README-pt.md` adicional)
+### 🇧🇷 Versão em Português
 
 # 🎮 Video Games Sales Data Pipeline 
 [![GCP](https://img.shields.io/badge/Google_Cloud-4285F4?style=for-the-badge&logo=google-cloud&logoColor=white)](https://cloud.google.com/)
